@@ -44,10 +44,10 @@ const INIT_GUESTS = [
   {id:"s5",name:"Michael Hoffmann", email:"michael@koerber.com",pax:3,dietary:"Non-Veg",    regNo:"K005",attended:false,rsvpStatus:"confirmed"},
 ];
 const INIT_EVENT = {
-  title:"Koerber Technologies Sdn Bhd\n80th Anniversary Dinner",year:"2026",
+  title:"80th Anniversary Dinner",year:"2026",
   date:"Wednesday, 14 October 2026",time:"Registration — 6:00 PM onwards",
   venue:"Jiospace Petaling Jaya, Selangor",dresscode:"Smart Formal",
-  emailSubject:"Registration Confirmed — Koerber 80th Anniversary Dinner",
+  emailSubject:"Registration Confirmed — 80th Anniversary Dinner",
   emailBody:"Dear {{name}},\n\nYour registration for the {{title}} has been confirmed.\n\nDate: {{date}}\nTime: {{time}}\nVenue: {{venue}}\nDress Code: {{dresscode}}\nPax: {{pax}}\nDietary: {{dietary}}\n\nPlease present your QR code at the entrance.\n\nBest regards,\nKoerber Team",
 };
 const uid = () => "u" + Date.now().toString(36) + Math.random().toString(36).slice(2,5);
@@ -270,11 +270,14 @@ function Home({ setPage, event, guests }) {
           <span style={{fontSize:12,color:C.indigo,fontWeight:600,letterSpacing:0.5}}>Registration Now Open</span>
         </div>
 
-        <h1 className="fade-up delay-2" style={{fontSize:"clamp(28px,6vw,52px)",fontWeight:900,color:C.text,lineHeight:1.1,margin:"0 0 14px",letterSpacing:-0.5}}>
-          {event.title.split("\n").map((line,i) => (
-            <span key={i} style={{display:"block"}}>{line}</span>
-          ))}
-        </h1>
+        <div className="fade-up delay-2" style={{margin:"0 0 14px",textAlign:"center"}}>
+          <div style={{fontSize:"clamp(15px,3vw,22px)",fontWeight:700,color:C.textMid,letterSpacing:0.3,marginBottom:4}}>
+            Koerber Technologies Sdn Bhd
+          </div>
+          <div style={{fontSize:"clamp(24px,5vw,44px)",fontWeight:900,color:C.text,lineHeight:1.1,letterSpacing:-0.5}}>
+            80th Anniversary Dinner
+          </div>
+        </div>
         <p className="fade-up delay-2" style={{fontSize:"clamp(14px,2.5vw,17px)",color:C.textMid,margin:"0 0 6px"}}>📅 {event.date}</p>
         <p className="fade-up delay-2" style={{fontSize:"clamp(13px,2vw,15px)",color:C.textMid,margin:"0 0 34px"}}>🕕 {event.time} &nbsp;·&nbsp; 📍 {event.venue}</p>
 
