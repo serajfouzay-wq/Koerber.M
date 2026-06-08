@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/Koerber.M/static/js/main.032f72fa.js",
+    "main.js": "/Koerber.M/static/js/main.c0ac290d.js",
     "index.html": "/Koerber.M/index.html",
-    "main.032f72fa.js.map": "/Koerber.M/static/js/main.032f72fa.js.map"
+    "main.c0ac290d.js.map": "/Koerber.M/static/js/main.c0ac290d.js.map"
   },
   "entrypoints": [
-    "static/js/main.032f72fa.js"
+    "static/js/main.c0ac290d.js"
   ]
 }
