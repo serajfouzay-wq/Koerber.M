@@ -44,10 +44,10 @@ const INIT_GUESTS = [
   {id:"s5",name:"Michael Hoffmann", email:"michael@koerber.com",pax:3,dietary:"Non-Veg",    regNo:"K005",attended:false,rsvpStatus:"confirmed"},
 ];
 const INIT_EVENT = {
-  title:"Körber Innovation Summit",year:"2026",
-  date:"Wensday, 24 October 2026",time:"6:30 PM - 10:30 PM",
-  venue:" Jiospace Petaling Jaya, Selangor ",dresscode:"Business Casual",
-  emailSubject:"Registration Confirmed — Körber Innovation Summit",
+  title:"Koerber Technologies Sdn Bhd\n80th Anniversary Dinner",year:"2026",
+  date:"Wednesday, 14 October 2026",time:"Registration — 6:00 PM onwards",
+  venue:"Jiospace Petaling Jaya, Selangor",dresscode:"Smart Formal",
+  emailSubject:"Registration Confirmed — Koerber 80th Anniversary Dinner",
   emailBody:"Dear {{name}},\n\nYour registration for the {{title}} has been confirmed.\n\nDate: {{date}}\nTime: {{time}}\nVenue: {{venue}}\nDress Code: {{dresscode}}\nPax: {{pax}}\nDietary: {{dietary}}\n\nPlease present your QR code at the entrance.\n\nBest regards,\nKoerber Team",
 };
 const uid = () => "u" + Date.now().toString(36) + Math.random().toString(36).slice(2,5);
@@ -179,11 +179,7 @@ function Logo({ size=36, dark=false }) {
     <div style={{display:"inline-flex",alignItems:"center",gap:size*0.25}}>
       <img src={KOERBER_LOGO} alt="Körber"
         style={{height:size,width:"auto",objectFit:"contain",display:"block"}}/>
-      {size>=28 && (
-        <div style={{fontFamily:"'Helvetica Neue','Arial',sans-serif",fontWeight:700,fontSize:size*0.38,color:dark?"rgba(255,255,255,0.55)":C.textLight,letterSpacing:size*0.04,textTransform:"uppercase",lineHeight:1}}>
-          Technology Group
-        </div>
-      )}
+
     </div>
   );
 }
@@ -252,15 +248,18 @@ function Home({ setPage, event, guests }) {
       <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:"clamp(300px,50vw,600px)",height:"clamp(300px,50vw,600px)",borderRadius:"50%",background:"radial-gradient(circle,rgba(99,102,241,0.04),transparent 70%)",pointerEvents:"none"}}/>
 
       <div style={{position:"relative",textAlign:"center",maxWidth:660}}>
-        <div className="fade-up" style={{display:"flex",justifyContent:"center",marginBottom:28}}><Logo size={58}/></div>
+        <div className="fade-up" style={{display:"flex",justifyContent:"center",marginBottom:20}}><Logo size={58} stacked={true}/></div>
+
 
         <div className="fade-up delay-1" style={{display:"inline-flex",alignItems:"center",gap:7,background:C.indigoLight,border:"1px solid "+C.borderMid,borderRadius:20,padding:"5px 16px",marginBottom:20}}>
           <span style={{width:7,height:7,borderRadius:"50%",background:C.green,display:"inline-block",animation:"pulse 2s ease-in-out infinite"}}/>
           <span style={{fontSize:12,color:C.indigo,fontWeight:600,letterSpacing:0.5}}>Registration Now Open</span>
         </div>
 
-        <h1 className="fade-up delay-2" style={{fontSize:"clamp(30px,7vw,58px)",fontWeight:900,color:C.text,lineHeight:1.05,margin:"0 0 14px",letterSpacing:-1}}>
-          {event.title}
+        <h1 className="fade-up delay-2" style={{fontSize:"clamp(28px,6vw,52px)",fontWeight:900,color:C.text,lineHeight:1.1,margin:"0 0 14px",letterSpacing:-0.5}}>
+          {event.title.split("\n").map((line,i) => (
+            <span key={i} style={{display:"block"}}>{line}</span>
+          ))}
         </h1>
         <p className="fade-up delay-2" style={{fontSize:"clamp(14px,2.5vw,17px)",color:C.textMid,margin:"0 0 6px"}}>📅 {event.date}</p>
         <p className="fade-up delay-2" style={{fontSize:"clamp(13px,2vw,15px)",color:C.textMid,margin:"0 0 34px"}}>🕕 {event.time} &nbsp;·&nbsp; 📍 {event.venue}</p>
