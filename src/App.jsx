@@ -298,78 +298,37 @@ function RSVP({ guests, setGuests, event }) {
 
   const sendEmail = async (guest) => {
     try {
-      const vars={name:guest.name,pax:String(guest.pax),dietary:guest.dietary,regNo:guest.regNo,date:event.date,time:event.time,venue:event.venue,dresscode:event.dresscode,title:event.title,year:event.year||""};
-      const bodyText=fillTemplate(event.emailBody||"Dear {{name}},\n\nYour registration for {{title}} is confirmed.\n\nDate: {{date}}\nTime: {{time}}\nVenue: {{venue}}\nDress Code: {{dresscode}}\nPax: {{pax}}\nDietary: {{dietary}}\nRegistration No: {{regNo}}\n\nYour QR code is attached below — please show it at the entrance for check-in.\n\nBest regards,\nKörber Team",vars);
-      const subjectText=fillTemplate(event.emailSubject||"Registration Confirmed — {{title}}",vars);
+      const vars = {name:guest.name,pax:String(guest.pax),dietary:guest.dietary,regNo:guest.regNo,date:event.date,time:event.time,venue:event.venue,dresscode:event.dresscode,title:event.title,year:event.year||""};
+      const bodyText = fillTemplate(event.emailBody||"Dear {{name}},\n\nYour registration for {{title}} is confirmed.\n\nDate: {{date}}\nTime: {{time}}\nVenue: {{venue}}\nDress Code: {{dresscode}}\nPax: {{pax}}\nDietary: {{dietary}}\nReg No: {{regNo}}\n\nPlease show your QR code at the entrance.\n\nBest regards,\nKörber Team", vars);
+      const subjectText = fillTemplate(event.emailSubject||"Registration Confirmed — {{title}}", vars);
 
-      // QR will be captured after render via useEffect
-      let qrDataUrl = "";
-      // Note: QR canvas captured post-render in useEffect below
-
-      // Build HTML email with QR code embedded as image
-      const htmlBody = `
-        <div style="font-family:'Helvetica Neue',Arial,sans-serif;max-width:560px;margin:0 auto;background:#fff;border-radius:12px;overflow:hidden">
-          <div style="background:linear-gradient(135deg,#6366F1,#EC4899);padding:32px 28px;text-align:center">
-            <h1 style="color:#fff;margin:0;font-size:22px;font-weight:700;letter-spacing:2px">KÖRBER</h1>
-            <p style="color:rgba(255,255,255,0.75);margin:4px 0 0;font-size:12px;letter-spacing:1px;text-transform:uppercase">Technology Group</p>
-          </div>
-          <div style="padding:32px 28px;background:#F8F9FF">
-            <div style="background:#fff;border-radius:8px;padding:24px;margin-bottom:20px;border:1px solid #E0E7FF">
-              <p style="margin:0 0 6px;font-size:16px;color:#1E1B4B">Dear <strong>${guest.name}</strong>,</p>
-              <p style="margin:0;font-size:14px;color:#64748B">Your registration has been confirmed. Please find your QR code below.</p>
-            </div>
-            <div style="background:#1E1B4B;border-radius:12px;padding:24px;text-align:center;margin-bottom:20px">
-              ${qrDataUrl ? `<img src="${qrDataUrl}" alt="QR Code" width="180" height="180" style="border-radius:8px;border:4px solid rgba(236,72,153,0.5);display:block;margin:0 auto 14px"/>` : ""}
-              <div style="color:rgba(255,255,255,0.5);font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px">Registration Number</div>
-              <div style="font-family:'Courier New',monospace;font-size:26px;font-weight:900;letter-spacing:6px;background:linear-gradient(135deg,#A5B4FC,#F9A8D4);-webkit-background-clip:text;-webkit-text-fill-color:transparent">${guest.regNo}</div>
-            </div>
-            <div style="background:#EEF2FF;border-radius:8px;padding:16px;margin-bottom:16px">
-              <table style="width:100%;font-size:13px;border-collapse:collapse">
-                ${[["📅 Date",event.date],["🕕 Time",event.time],["📍 Venue",event.venue],["👔 Dress Code",event.dresscode],["👥 Pax",String(guest.pax)],["🍽 Dietary",guest.dietary]].map(([k,v])=>`<tr><td style="padding:4px 0;color:#6366F1;font-weight:600;width:110px">${k}</td><td style="padding:4px 0;color:#1E1B4B">${v}</td></tr>`).join("")}
-              </table>
-            </div>
-            <p style="font-size:12px;color:#94A3B8;text-align:center;margin:0">Please show this QR code at the entrance for check-in.</p>
-          </div>
-          <div style="background:#1E1B4B;padding:16px 28px;text-align:center">
-            <p style="color:rgba(255,255,255,0.35);font-size:11px;margin:0;letter-spacing:1px;text-transform:uppercase">Körber Technology Group · koerber.com</p>
-          </div>
-        </div>`;
-
-      // Use Resend API (via Vercel serverless) if available, else fall back to Web3Forms
-      if (typeof process !== "undefined" || window.location.hostname !== "localhost") {
-        // Try /api/send-email first (Vercel)
-        try {
-          const r=await fetch("/api/send-email",{
-            method:"POST",
-            headers:{"Content-Type":"application/json"},
-            body:JSON.stringify({to:guest.email,name:guest.name,subject:subjectText,html:htmlBody,text:bodyText,qrDataUrl,regNo:guest.regNo,pax:guest.pax,dietary:guest.dietary,date:event.date,time:event.time,venue:event.venue,dresscode:event.dresscode,title:event.title})
-          });
-          if(r.ok){const d=await r.json();if(d.ok)return{ok:true};}
-        }catch(e){}
-      }
-
-      // Fallback: Web3Forms (plain text + fields, no QR in email body)
-      const r=await fetch("https://api.web3forms.com/submit",{
-        method:"POST",
-        headers:{"Content-Type":"application/json","Accept":"application/json"},
-        body:JSON.stringify({
-          access_key: WEB3FORMS_KEY,
-          subject: subjectText,
-          from_name: "Körber Events",
+      const r = await fetch("/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
           to: guest.email,
           name: guest.name,
-          email: guest.email,
-          message: bodyText + "\n\n(QR code available in your registration card — please screenshot it)",
-          registration_no: guest.regNo,
+          subject: subjectText,
+          text: bodyText,
+          qrDataUrl: guest.qrDataUrl || "",
+          regNo: guest.regNo,
           pax: guest.pax,
           dietary: guest.dietary,
-          event_date: event.date,
-          event_venue: event.venue,
+          date: event.date,
+          time: event.time,
+          venue: event.venue,
+          dresscode: event.dresscode,
+          title: event.title,
         })
       });
-      const d=await r.json();
-      return d.success?{ok:true}:{ok:false,error:d.message||"Web3Forms error"};
-    }catch(e){return{ok:false,error:String(e)};}
+      const text = await r.text();
+      let d = {};
+      try { d = JSON.parse(text); } catch(e) {}
+      if (d.ok) return { ok: true };
+      return { ok: false, error: d.error || "Email failed" };
+    } catch(e) {
+      return { ok: false, error: String(e) };
+    }
   };
 
   const submit = async () => {
