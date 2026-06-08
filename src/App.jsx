@@ -174,12 +174,26 @@ function QRBox({ value, size=160 }) {
 }
 
 // ─── LOGO ─────────────────────────────────────────────────────────────────────
-function Logo({ size=36, dark=false }) {
+function Logo({ size=36, dark=false, stacked=false }) {
+  if (stacked) {
+    return (
+      <div style={{display:"inline-flex",flexDirection:"column",alignItems:"center",gap:5}}>
+        <img src={KOERBER_LOGO} alt="Körber" style={{height:size,width:"auto",objectFit:"contain"}}/>
+        <span style={{fontFamily:"Arial,sans-serif",fontWeight:700,fontSize:size*0.27,
+          color:C.textLight,letterSpacing:size*0.1,textTransform:"uppercase",whiteSpace:"nowrap"}}>
+          Technology Group
+        </span>
+      </div>
+    );
+  }
   return (
-    <div style={{display:"inline-flex",alignItems:"center",gap:size*0.25}}>
-      <img src={KOERBER_LOGO} alt="Körber"
-        style={{height:size,width:"auto",objectFit:"contain",display:"block"}}/>
-
+    <div style={{display:"inline-flex",flexDirection:"row",alignItems:"center",gap:size*0.3}}>
+      <img src={KOERBER_LOGO} alt="Körber" style={{height:size,width:"auto",objectFit:"contain"}}/>
+      <span style={{fontFamily:"Arial,sans-serif",fontWeight:700,fontSize:size*0.27,
+        color:dark?"rgba(255,255,255,0.6)":C.textLight,letterSpacing:size*0.08,
+        textTransform:"uppercase",whiteSpace:"nowrap"}}>
+        Technology Group
+      </span>
     </div>
   );
 }
