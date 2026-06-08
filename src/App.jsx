@@ -343,10 +343,19 @@ function RSVP({ guests, setGuests, event }) {
     setGuests(prev=>[...prev,guest]);
     setConfetti(true);
     setTimeout(()=>setConfetti(false),3000);
-    // Send email
     setDone(guest);
     setSubmitting(false);
-    // Email sent via useEffect after QR renders
+    // Send email after QR renders (800ms delay)
+    setTimeout(async () => {
+      let qrDataUrl = "";
+      try {
+        const qrBox = document.getElementById("qr-canvas-box");
+        const c = qrBox ? qrBox.querySelector("canvas") : document.querySelector("canvas");
+        if (c) qrDataUrl = c.toDataURL("image/png");
+      } catch(e) {}
+      const eResult = await sendEmail({...guest, qrDataUrl});
+      setEmailStatus(eResult);
+    }, 900);
   };
 
   if(done){
@@ -395,6 +404,11 @@ function RSVP({ guests, setGuests, event }) {
             </div>
           )}
 
+          {emailStatus && (
+            <div style={{background:emailStatus.ok?"#D1FAE5":"#FEF9C3",border:"1px solid "+(emailStatus.ok?C.green:C.yellow),borderRadius:8,padding:"8px 14px",marginBottom:12,fontSize:12,color:emailStatus.ok?"#065F46":"#92400E",textAlign:"center"}}>
+              {emailStatus.ok ? "✅ Confirmation email sent to "+done.email : "⚠️ Email: "+emailStatus.error}
+            </div>
+          )}
           <p style={{fontSize:12,color:C.textLight,marginBottom:18}}>Screenshot or print this card and present it at the entrance.</p>
 
           <div style={{display:"flex",flexDirection:"column",gap:8}}>
