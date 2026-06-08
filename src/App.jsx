@@ -44,9 +44,9 @@ const INIT_GUESTS = [
   {id:"s5",name:"Michael Hoffmann", email:"michael@koerber.com",pax:3,dietary:"Non-Veg",    regNo:"K005",attended:false,rsvpStatus:"confirmed"},
 ];
 const INIT_EVENT = {
-  title:"Körber Innovation Summit",year:"2025",
-  date:"Friday, 18 July 2025",time:"6:30 PM - 10:00 PM",
-  venue:"Marina Bay Sands, Singapore",dresscode:"Business Casual",
+  title:"Körber Innovation Summit",year:"2026",
+  date:"Wensday, 24 October 2026",time:"6:30 PM - 10:30 PM",
+  venue:" Jiospace Petaling Jaya, Selangor ",dresscode:"Business Casual",
   emailSubject:"Registration Confirmed — Körber Innovation Summit",
   emailBody:"Dear {{name}},\n\nYour registration for the {{title}} has been confirmed.\n\nDate: {{date}}\nTime: {{time}}\nVenue: {{venue}}\nDress Code: {{dresscode}}\nPax: {{pax}}\nDietary: {{dietary}}\n\nPlease present your QR code at the entrance.\n\nBest regards,\nKoerber Team",
 };
