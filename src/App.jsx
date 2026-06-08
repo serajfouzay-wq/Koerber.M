@@ -229,6 +229,18 @@ function Nav({ page, setPage }) {
   );
 }
 
+// ─── BACK BUTTON ─────────────────────────────────────────────────────────────
+function BackBtn({ setPage }) {
+  return (
+    <button onClick={()=>setPage("home")}
+      style={{position:"fixed",top:68,left:16,zIndex:99,background:"rgba(255,255,255,0.92)",border:"1px solid "+C.border,borderRadius:8,padding:"7px 14px",fontSize:13,fontWeight:600,color:C.indigo,cursor:"pointer",backdropFilter:"blur(8px)",display:"flex",alignItems:"center",gap:6,boxShadow:"0 2px 10px rgba(99,102,241,0.1)",transition:"all 0.15s",fontFamily:"inherit"}}
+      onMouseOver={e=>{e.currentTarget.style.background=C.indigoLight;e.currentTarget.style.borderColor=C.indigo;}}
+      onMouseOut={e=>{e.currentTarget.style.background="rgba(255,255,255,0.92)";e.currentTarget.style.borderColor=C.border;}}>
+      ← Back
+    </button>
+  );
+}
+
 // ─── HOME ─────────────────────────────────────────────────────────────────────
 function Home({ setPage, event, guests }) {
   return(
@@ -285,7 +297,7 @@ function Home({ setPage, event, guests }) {
 }
 
 // ─── RSVP ─────────────────────────────────────────────────────────────────────
-function RSVP({ guests, setGuests, event }) {
+function RSVP({ guests, setGuests, event, setPage }) {
   const [name,setName]=useState("");
   const [email,setEmail]=useState("");
   const [pax,setPax]=useState(1);
@@ -362,6 +374,7 @@ function RSVP({ guests, setGuests, event }) {
     const qrVal="KOERBER|"+done.regNo+"|"+done.name+"|"+done.id;
     return(
       <div style={{minHeight:"100vh",background:C.bg,display:"flex",flexDirection:"column",alignItems:"center",padding:"80px 20px 40px",position:"relative"}}>
+        <BackBtn setPage={setPage}/>
         <Confetti active={confetti}/>
         <div className="pop-in" id="rsvp-card" style={{background:C.white,borderRadius:20,boxShadow:"0 8px 40px rgba(99,102,241,0.15)",border:"1px solid "+C.border,maxWidth:500,width:"100%",padding:"clamp(24px,5vw,44px)",textAlign:"center"}}>
           {/* Success badge */}
@@ -452,6 +465,7 @@ function RSVP({ guests, setGuests, event }) {
 
   return(
     <div style={{minHeight:"100vh",background:C.bg,display:"flex",flexDirection:"column",alignItems:"center",padding:"80px 20px 40px"}}>
+      <BackBtn setPage={setPage}/>
       <div style={{maxWidth:500,width:"100%"}}>
         <div className="fade-up" style={{textAlign:"center",marginBottom:28}}>
           <Logo size={42}/>
@@ -506,7 +520,7 @@ function RSVP({ guests, setGuests, event }) {
 }
 
 // ─── CHECK-IN ─────────────────────────────────────────────────────────────────
-function CheckIn({ guests, setGuests }) {
+function CheckIn({ guests, setGuests, setPage }) {
   const [pinOk,setPinOk]=useState(false);
   const [pin,setPin]=useState("");
   const [pinErr,setPinErr]=useState("");
@@ -566,6 +580,7 @@ function CheckIn({ guests, setGuests }) {
 
   if(!pinOk)return(
     <div style={{minHeight:"100vh",background:C.bg,display:"flex",alignItems:"center",justifyContent:"center",padding:"80px 20px"}}>
+      <BackBtn setPage={setPage}/>
       <div className="pop-in" style={{background:C.white,borderRadius:20,boxShadow:"0 8px 40px rgba(99,102,241,0.12)",border:"1px solid "+C.border,width:"min(400px,100%)",padding:"clamp(24px,5vw,44px)"}}>
         <div style={{textAlign:"center",marginBottom:26}}>
           <Logo size={36}/>
@@ -587,6 +602,7 @@ function CheckIn({ guests, setGuests }) {
 
   return(
     <div style={{minHeight:"100vh",background:C.bg,padding:"80px 20px 40px"}}>
+      <BackBtn setPage={setPage}/>
       <div style={{maxWidth:620,margin:"0 auto"}}>
         <div className="fade-up">
           <h2 style={{fontSize:"clamp(20px,4vw,26px)",fontWeight:800,color:C.text,marginBottom:4}}>Check-In</h2>
@@ -674,7 +690,7 @@ function CheckIn({ guests, setGuests }) {
 }
 
 // ─── ADMIN ────────────────────────────────────────────────────────────────────
-function Admin({ guests, setGuests, event, setEvent }) {
+function Admin({ guests, setGuests, event, setEvent, setPage }) {
   const [authed,setAuthed]=useState(false);
   const [pass,setPass]=useState("");
   const [passErr,setPassErr]=useState("");
@@ -696,6 +712,7 @@ function Admin({ guests, setGuests, event, setEvent }) {
 
   if(!authed)return(
     <div style={{minHeight:"100vh",background:C.bg,display:"flex",alignItems:"center",justifyContent:"center",padding:"80px 20px"}}>
+      <BackBtn setPage={setPage}/>
       <div className="pop-in" style={{background:C.white,borderRadius:20,boxShadow:"0 8px 40px rgba(99,102,241,0.12)",border:"1px solid "+C.border,width:"min(440px,100%)",padding:"clamp(24px,5vw,48px)"}}>
         <div style={{textAlign:"center",marginBottom:28}}>
           <Logo size={42}/>
@@ -740,6 +757,7 @@ function Admin({ guests, setGuests, event, setEvent }) {
   return(
     <div style={{minHeight:"100vh",background:C.bg}}>
       <div style={{paddingTop:58}}>
+        <BackBtn setPage={setPage}/>
         {/* Header */}
         <div style={{background:C.white,borderBottom:"1px solid "+C.border,padding:"16px clamp(12px,3vw,32px)"}}>
           <div style={{maxWidth:1040,margin:"0 auto",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:10}}>
@@ -1035,9 +1053,9 @@ export default function App() {
       <style>{GS}</style>
       <Nav page={page} setPage={setPage}/>
       {page==="home"    && <Home    setPage={setPage} event={event} guests={guests}/>}
-      {page==="rsvp"    && <RSVP    guests={guests} setGuests={setGuests} event={event}/>}
-      {page==="checkin" && <CheckIn guests={guests} setGuests={setGuests}/>}
-      {page==="admin"   && <Admin   guests={guests} setGuests={setGuests} event={event} setEvent={setEvent}/>}
+      {page==="rsvp"    && <RSVP    guests={guests} setGuests={setGuests} event={event} setPage={setPage}/>}
+      {page==="checkin" && <CheckIn guests={guests} setGuests={setGuests} setPage={setPage}/>}
+      {page==="admin"   && <Admin   guests={guests} setGuests={setGuests} event={event} setEvent={setEvent} setPage={setPage}/>}
     </div>
   );
 }
