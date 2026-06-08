@@ -175,25 +175,15 @@ function QRBox({ value, size=160 }) {
 
 // ─── LOGO ─────────────────────────────────────────────────────────────────────
 function Logo({ size=36, dark=false, stacked=false }) {
-  if (stacked) {
-    return (
-      <div style={{display:"inline-flex",flexDirection:"column",alignItems:"center",gap:5}}>
-        <img src={KOERBER_LOGO} alt="Körber" style={{height:size,width:"auto",objectFit:"contain"}}/>
-        <span style={{fontFamily:"Arial,sans-serif",fontWeight:700,fontSize:size*0.27,
-          color:C.textLight,letterSpacing:size*0.1,textTransform:"uppercase",whiteSpace:"nowrap"}}>
-          Technology Group
-        </span>
-      </div>
-    );
-  }
   return (
     <div style={{display:"inline-flex",flexDirection:"row",alignItems:"center",gap:size*0.3}}>
       <img src={KOERBER_LOGO} alt="Körber" style={{height:size,width:"auto",objectFit:"contain"}}/>
-      <span style={{fontFamily:"Arial,sans-serif",fontWeight:700,fontSize:size*0.27,
-        color:dark?"rgba(255,255,255,0.6)":C.textLight,letterSpacing:size*0.08,
-        textTransform:"uppercase",whiteSpace:"nowrap"}}>
-        Technology Group
-      </span>
+      {!stacked && (
+        <span style={{fontFamily:"Arial,sans-serif",fontWeight:700,fontSize:size*0.27,
+          color:dark?"rgba(255,255,255,0.7)":C.textMid,letterSpacing:0.5,whiteSpace:"nowrap"}}>
+          Koerber Technologies Group Sdn Bhd
+        </span>
+      )}
     </div>
   );
 }
@@ -262,7 +252,12 @@ function Home({ setPage, event, guests }) {
       <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:"clamp(300px,50vw,600px)",height:"clamp(300px,50vw,600px)",borderRadius:"50%",background:"radial-gradient(circle,rgba(99,102,241,0.04),transparent 70%)",pointerEvents:"none"}}/>
 
       <div style={{position:"relative",textAlign:"center",maxWidth:660}}>
-        <div className="fade-up" style={{display:"flex",justifyContent:"center",marginBottom:20}}><Logo size={58} stacked={true}/></div>
+        <div className="fade-up" style={{display:"flex",flexDirection:"column",alignItems:"center",marginBottom:20}}>
+          <Logo size={58} stacked={true}/>
+          <div style={{fontSize:"clamp(12px,2vw,15px)",fontWeight:600,color:C.textMid,marginTop:8,letterSpacing:0.3}}>
+            Koerber Technologies Group Sdn Bhd
+          </div>
+        </div>
 
 
         <div className="fade-up delay-1" style={{display:"inline-flex",alignItems:"center",gap:7,background:C.indigoLight,border:"1px solid "+C.borderMid,borderRadius:20,padding:"5px 16px",marginBottom:20}}>
@@ -270,14 +265,9 @@ function Home({ setPage, event, guests }) {
           <span style={{fontSize:12,color:C.indigo,fontWeight:600,letterSpacing:0.5}}>Registration Now Open</span>
         </div>
 
-        <div className="fade-up delay-2" style={{margin:"0 0 14px",textAlign:"center"}}>
-          <div style={{fontSize:"clamp(15px,3vw,22px)",fontWeight:700,color:C.textMid,letterSpacing:0.3,marginBottom:4}}>
-            Koerber Technologies Sdn Bhd
-          </div>
-          <div style={{fontSize:"clamp(24px,5vw,44px)",fontWeight:900,color:C.text,lineHeight:1.1,letterSpacing:-0.5}}>
-            80th Anniversary Dinner
-          </div>
-        </div>
+        <h1 className="fade-up delay-2" style={{fontSize:"clamp(28px,6vw,52px)",fontWeight:900,color:C.text,lineHeight:1.1,margin:"0 0 14px",letterSpacing:-0.5,textAlign:"center"}}>
+          80th Anniversary Dinner
+        </h1>
         <p className="fade-up delay-2" style={{fontSize:"clamp(14px,2.5vw,17px)",color:C.textMid,margin:"0 0 6px"}}>📅 {event.date}</p>
         <p className="fade-up delay-2" style={{fontSize:"clamp(13px,2vw,15px)",color:C.textMid,margin:"0 0 34px"}}>🕕 {event.time} &nbsp;·&nbsp; 📍 {event.venue}</p>
 
