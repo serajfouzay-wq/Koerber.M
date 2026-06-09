@@ -297,6 +297,8 @@ function RSVP({ guests, setGuests, event, setPage }) {
   const [done,setDone]=useState(null);
   const [confetti,setConfetti]=useState(false);
   const [emailStatus,setEmailStatus]=useState(null);
+  const [attending,setAttending]=useState("confirmed");
+  const [pendingEmail,setPendingEmail]=useState(null);
 
   const sendEmail = async (guest) => {
     try {
