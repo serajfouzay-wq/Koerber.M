@@ -45,7 +45,7 @@ const INIT_GUESTS = [
 ];
 const INIT_EVENT = {
   title:"80th Anniversary Dinner",year:"2026",
-  date:"Wednesday, 14 October 2026",time:"Registration — 6:00 PM onwards",
+  date:"Wednesday, 14 October 2026",time:"6:00 PM (Registration)",
   venue:"Jiospace Petaling Jaya, Selangor",dresscode:"Smart Formal",
   emailSubject:"Registration Confirmed — 80th Anniversary Dinner",
   emailBody:"Dear {{name}},\n\nYour registration for the {{title}} has been confirmed.\n\nDate: {{date}}\nTime: {{time}}\nVenue: {{venue}}\nDress Code: {{dresscode}}\nPax: {{pax}}\nDietary: {{dietary}}\n\nPlease present your QR code at the entrance.\n\nBest regards,\nKoerber Team",
@@ -181,7 +181,7 @@ function Logo({ size=36, dark=false, stacked=false }) {
       {!stacked && (
         <span style={{fontFamily:"Arial,sans-serif",fontWeight:700,fontSize:size*0.27,
           color:dark?"rgba(255,255,255,0.7)":C.textMid,letterSpacing:0.5,whiteSpace:"nowrap"}}>
-          Koerber Technologies Group Sdn Bhd
+          Koerber Technologies Sdn Bhd
         </span>
       )}
     </div>
@@ -255,15 +255,12 @@ function Home({ setPage, event, guests }) {
         <div className="fade-up" style={{display:"flex",flexDirection:"column",alignItems:"center",marginBottom:20}}>
           <Logo size={58} stacked={true}/>
           <div style={{fontSize:"clamp(12px,2vw,15px)",fontWeight:600,color:C.textMid,marginTop:8,letterSpacing:0.3}}>
-            Koerber Technologies Group Sdn Bhd
+            Koerber Technologies Sdn Bhd
           </div>
         </div>
 
 
-        <div className="fade-up delay-1" style={{display:"inline-flex",alignItems:"center",gap:7,background:C.indigoLight,border:"1px solid "+C.borderMid,borderRadius:20,padding:"5px 16px",marginBottom:20}}>
-          <span style={{width:7,height:7,borderRadius:"50%",background:C.green,display:"inline-block",animation:"pulse 2s ease-in-out infinite"}}/>
-          <span style={{fontSize:12,color:C.indigo,fontWeight:600,letterSpacing:0.5}}>Registration Now Open</span>
-        </div>
+
 
         <h1 className="fade-up delay-2" style={{fontSize:"clamp(28px,6vw,52px)",fontWeight:900,color:C.text,lineHeight:1.1,margin:"0 0 14px",letterSpacing:-0.5,textAlign:"center"}}>
           80th Anniversary Dinner
@@ -274,25 +271,12 @@ function Home({ setPage, event, guests }) {
         <div className="fade-up delay-3" style={{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap",marginBottom:36}}>
           <button onClick={()=>setPage("rsvp")} className="btn-grad"
             style={{color:"#fff",border:"none",borderRadius:9,padding:"14px clamp(22px,4vw,36px)",fontSize:"clamp(13px,2.5vw,15px)",fontWeight:800,cursor:"pointer",letterSpacing:0.3,boxShadow:"0 4px 20px rgba(99,102,241,0.4)"}}>
-            Register Now →
+            RSVP
           </button>
-          <button onClick={()=>setPage("checkin")}
-            style={{background:"transparent",color:C.indigo,border:"1.5px solid "+C.indigo,borderRadius:9,padding:"13px 24px",fontSize:"clamp(12px,2vw,14px)",fontWeight:700,cursor:"pointer",transition:"all 0.18s",fontFamily:"inherit"}}
-            onMouseOver={e=>{e.currentTarget.style.background=C.indigoLight;}}
-            onMouseOut={e=>{e.currentTarget.style.background="transparent";}}>
-            📷 Staff Check-In
-          </button>
+
         </div>
 
-        {/* Stats card */}
-        <div className="fade-up delay-4" style={{display:"flex",background:C.white,borderRadius:16,border:"1px solid "+C.border,overflow:"hidden",boxShadow:"0 4px 24px rgba(99,102,241,0.08)"}}>
-          {[[guests.length,"Registered"],[guests.filter(g=>g.attended).length,"Checked In"],["200","Capacity"],["Free","Entry"]].map(([n,l],i)=>(
-            <div key={l} style={{flex:1,padding:"clamp(12px,2vw,18px) 6px",textAlign:"center",borderRight:i<3?"1px solid "+C.border:"none"}}>
-              <div style={{fontWeight:800,fontSize:"clamp(18px,3vw,24px)",background:C.grad,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>{n}</div>
-              <div style={{fontSize:"clamp(9px,1.5vw,10px)",color:C.textLight,fontWeight:600,textTransform:"uppercase",letterSpacing:0.5,marginTop:2}}>{l}</div>
-            </div>
-          ))}
-        </div>
+
       </div>
 
       <div style={{position:"absolute",bottom:20,fontSize:11,color:C.textLight}}>
@@ -356,7 +340,7 @@ function RSVP({ guests, setGuests, event, setPage }) {
     setSubmitting(true);
     await new Promise(r=>setTimeout(r,700));
     const regNo="K"+String(guests.length+1).padStart(3,"0");
-    const guest={id:uid(),name:name.trim(),email:email.trim().toLowerCase(),pax,dietary,regNo,attended:false,rsvpStatus:"confirmed",createdAt:new Date().toISOString()};
+    const guest={id:uid(),name:name.trim(),email:email.trim().toLowerCase(),pax,dietary,regNo,attended:false,rsvpStatus:attending,createdAt:new Date().toISOString()};
     await dbUpsert("guests",guest);
     setGuests(prev=>[...prev,guest]);
     setConfetti(true);
@@ -475,7 +459,8 @@ function RSVP({ guests, setGuests, event, setPage }) {
       <div style={{maxWidth:500,width:"100%"}}>
         <div className="fade-up" style={{textAlign:"center",marginBottom:28}}>
           <Logo size={42}/>
-          <h2 style={{fontSize:"clamp(20px,4vw,28px)",fontWeight:800,color:C.text,margin:"18px 0 4px"}}>Event Registration</h2>
+          <h2 style={{fontSize:"clamp(20px,4vw,28px)",fontWeight:800,color:C.text,margin:"18px 0 4px"}}>RSVP</h2>
+          <p style={{color:C.textMid,fontSize:13,marginBottom:0}}>Fill in your details below</p>
           <p style={{color:C.textMid,fontSize:13}}>{event.title} &nbsp;·&nbsp; {event.date}</p>
         </div>
 
@@ -509,6 +494,25 @@ function RSVP({ guests, setGuests, event, setPage }) {
                 <button key={val} onClick={()=>setDietary(val)}
                   style={{background:dietary===val?"linear-gradient(135deg,"+C.indigoLight+","+C.pinkLight+")":C.white,color:dietary===val?C.indigo:C.textMid,border:"1.5px solid "+(dietary===val?C.indigo:C.border),borderRadius:11,padding:"10px 6px",fontSize:11,fontWeight:600,textAlign:"center",cursor:"pointer",transition:"all 0.17s",fontFamily:"inherit",boxShadow:dietary===val?"0 2px 10px rgba(99,102,241,0.15)":"none"}}>
                   <div style={{fontSize:19,marginBottom:3}}>{icon}</div>{val}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Attendance choice */}
+          <div className="slide-in delay-3" style={{marginBottom:20}}>
+            <label style={{display:"block",fontSize:11,fontWeight:700,color:C.textMid,letterSpacing:1.2,textTransform:"uppercase",marginBottom:10}}>Will you be attending?</label>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+              {[["✅","ATTENDING","confirmed"],["❌","NOT ATTENDING","declined"]].map(([icon,label,val])=>(
+                <button key={val} type="button"
+                  onClick={()=>setAttending(val)}
+                  style={{background:attending===val?(val==="confirmed"?C.greenLight:C.redLight):"transparent",
+                    color:attending===val?(val==="confirmed"?C.green:C.red):C.textMid,
+                    border:"1.5px solid "+(attending===val?(val==="confirmed"?C.green:C.red):C.border),
+                    borderRadius:10,padding:"14px 8px",fontSize:13,fontWeight:700,
+                    cursor:"pointer",transition:"all 0.17s",fontFamily:"inherit",textAlign:"center"}}>
+                  <div style={{fontSize:20,marginBottom:4}}>{icon}</div>
+                  {label}
                 </button>
               ))}
             </div>
